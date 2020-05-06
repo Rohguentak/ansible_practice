@@ -1,1 +1,22 @@
+---
+- hosts: all
+  tasks:
+  - name: make /data folder
+    become: yes
+    shell: mkdir /data
 
+  - name: mount /data
+    become: yes
+    mount:
+         path: /data
+         src: 172.28.128.23:/data
+         fstype: nfs
+         state: mounted
+  
+  - name: mount /home/vagrant
+    become: yes
+    mount:
+         path: /home/vagrant
+         src: 172.28.128.23:/home/vagrant
+         fstype: nfs
+         state: mounted
