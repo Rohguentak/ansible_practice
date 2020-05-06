@@ -58,6 +58,13 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
             #cp pbs* ~/
             #cp nfs* ~/
             #cd ~/
+            #sudo vi /etc/ansible/hosts
+            [pbs-host]
+            pbshost[1:2]
+
+            [pbs-mom]
+            pbsmom
+            
             #ansible-playbook nfs_client.yml //mount완료
             nfs-server에서 수행
             #wget https://github.com/PBSPro/pbspro/releases/download/v18.1.4/pbspro-18.1.4.tar.gz
