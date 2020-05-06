@@ -42,25 +42,24 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
       #systemctl start nfs 
 
       #rpcinfo -p localhost                                  //실행되는지 확인
-
+      #mkdir /data
       #vi /etc/exports
       /home/vagrant *(rw,no_root_squash,sync)
-      /data *(rw,no_root_sync,sync)
+      /data *(rw,no_root_squash,sync)
       #sudo service nfs restar
-
-
-
-   nfs-client
-   ----------
-      #mkdir /data
-      #mount -t nfs 172.28.128.23:/data /data                     //failover구성을 위해 PBS_HOME을 위한 디렉토리
-      #mount -t nfs 172.28.128.23:/home/vagrant /home/vagrant     //공통파일 설치를 위한 마운트
 
 
    pbs설치 작업(failover구성시)
    ----------------
+            #sudo yum install -y git epel-release
+            #sudo yum install -y ansible
+            #git clone https://github.com/Rohguentak/ansible_practice
+            #cd ansible_practice
+            #cp pbs* ~/
+            #cp nfs* ~/
+            #cd ~/
+            #ansible-playbook nfs_client.yml //mount완료
             nfs-server에서 수행
-            #yum install -y postgresql-server          //nfs서버에 postgresql의 default 유저인 postgres를 생성하기 위함
             #wget https://github.com/PBSPro/pbspro/releases/download/v18.1.4/pbspro-18.1.4.tar.gz
             #yum install -y gcc make rpm-build libtool hwloc-devel libX11-devel libXt-devel libedit-devel libical-devel ncurses-devel perl postgresql-devel python-devel tcl-devel  tk-devel swig expat-devel openssl-devel libXext libXft wget postgresql-server rpmdevtools
             #rpmdev-setuptree  //vagrant 계정으로 만들것
@@ -75,8 +74,6 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
             #cp pbspro.spec ~/rpmbuild/SPECS
             #cd ~/rpmbuild/SPECS
             #rpmbuild -ba pbspro.spec
-            #yum install -y epel-release
-            #yum install -y ansible
             #ansible-playbook pbs-install.yml
 
    
