@@ -57,7 +57,7 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
       #mount -t nfs 172.28.128.23:/home/vagrant /home/vagrant     //공통파일 설치를 위한 마운트
 
 
-   pbs설치 사전작업(failover구성시)
+   pbs설치 작업(failover구성시)
    ----------------
             nfs-server에서 수행
             #yum install -y postgresql-server          //nfs서버에 postgresql의 default 유저인 postgres를 생성하기 위함
@@ -75,79 +75,11 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
             #cp pbspro.spec ~/rpmbuild/SPECS
             #cd ~/rpmbuild/SPECS
             #rpmbuild -ba pbspro.spec
+            #ansible-playbook pbs-install.yml
 
-
-   pbspro 설치(구성 #2: pbs-host 서버 2대, 계산 노드 1대, nfs 서버 1대)
-   ------------------------------------------------------------------------------------------------------------------------------------
-   pbs-host1
-   ---------
-            #yum install -y ~/rpmbuild/RPMS/x86_64/pbspro-server-18.1.4-0.x86_64.rpm
-            #vi /etc/hosts
-            172.28.128.20     pbs-host1   pbs-host1
-            172.28.128.21     pbs-host2   pbs-host2
-            172.28.128.22     pbs-mom     pbs-mom
-            #vi /etc/pbs.conf
-            PBS_EXEC=/opt/pbs
-            PBS_SERVER=pbs-host1
-            PBS_PRIMARY=pbs-host1
-            PBS_SECONDARY=pbs-host2
-            PBS_START_SERVER=1
-            PBS_START_SCHED=1
-            PBS_START_COMM=1
-            PBS_START_MOM=0
-            PBS_HOME=/data/pbs
-            PBS_CORE_LIMIT=unlimited
-            PBS_SCP=/usr/bin/scp
-            #sudo chmod 4755 /opt/pbs/sbin/pbs_iff /opt/pbs/sbin/pbs_rcp
-            #sudo systemctl enable pbs
-            #sudo systemctl start pbs
-                        
-   pbs-host2
-   ---------
-            #yum install ~/rpmbuild/RPMS/x86_64/pbspro-server-18.1.4-0.x86_64.rpm
-            #vi /etc/hosts
-            172.28.128.20     pbs-host1   pbs-host1
-            172.28.128.21     pbs-host2   pbs-host2
-            172.28.128.22     pbs-mom     pbs-mom
-            #vi /etc/pbs.conf
-            PBS_EXEC=/opt/pbs
-            PBS_SERVER=pbs-host1
-            PBS_PRIMARY=pbs-host1
-            PBS_SECONDARY=pbs-host2
-            PBS_START_SERVER=1
-            PBS_START_SCHED=0                   //scheduler 실행 x
-            PBS_START_COMM=1
-            PBS_START_MOM=0
-            PBS_HOME=/data/pbs
-            PBS_CORE_LIMIT=unlimited
-            PBS_SCP=/usr/bin/scp
-            #sudo chmod 4755 /opt/pbs/sbin/pbs_iff /opt/pbs/sbin/pbs_rcp
-            #sudo systemctl enable pbs
-            #sudo systemctl start pbs
-            
-   pbs-mom
-   -------
-            #yum install -y ~/rpmbuild/RPMS/x86_64/pbspro-execution-18.1.4-0.x86_64.rpm
-            #vi /etc/hosts
-            172.28.128.20     pbs-host1   pbs-host1
-            172.28.128.21     pbs-host2   pbs-host2
-            172.28.128.22     pbs-mom     pbs-mom
-            #vi /etc/pbs.conf
-            PBS_EXEC=/opt/pbs
-            PBS_SERVER=pbs-host1
-            PBS_PRIMARY=pbs-host1
-            PBS_SECONDARY=pbs-host2
-            PBS_START_SERVER=0
-            PBS_START_SCHED=0                   
-            PBS_START_COMM=0
-            PBS_START_MOM=1                           //mom만 실행
-            PBS_HOME=/data/pbs
-            PBS_CORE_LIMIT=unlimited
-            PBS_SCP=/usr/bin/scp
-            #sudo chmod 4755 /opt/pbs/sbin/pbs_iff /opt/pbs/sbin/pbs_rcp
-            #sudo systemctl enable pbs
-            #sudo systemctl start pbs
-            
+   
+  
+   
             
             
    test failover
