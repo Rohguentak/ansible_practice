@@ -75,6 +75,8 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
             #cp pbspro.spec ~/rpmbuild/SPECS
             #cd ~/rpmbuild/SPECS
             #rpmbuild -ba pbspro.spec
+            #yum install -y epel-release
+            #yum install -y ansible
             #ansible-playbook pbs-install.yml
 
    
