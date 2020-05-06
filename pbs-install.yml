@@ -1,0 +1,62 @@
+---
+- hosts: pbs-host
+  tasks:
+  - name: install rpm file
+    become: yes
+    yum:
+       name: /home/vagrant/rpmbuild/RPMS/x86_64/pbspro-server-18.1.4-0.x86_64.rpm
+ 
+  - name: edit host file
+    become: yes
+    shell: chmod 666 /etc/hosts 
+    shell: echo "172.28.128.20 pbshost1 pbshost1" >> /etc/hosts
+    shell: echo "172.28.128.21 pbshost2 pbshost2" >> /etc/hosts
+    shell: echo "172.28.128.22 pbsmom pbsmom" >> /etc/hosts
+
+- hosts: pbshost1
+  tasks: 
+  - name: edit pbs.conf file
+    become: yes
+    shell: cp /home/vagrant/pbs-ser-conf /etc/pbs.conf
+
+- hosts: pbshost2
+  tasks: 
+  - name: edit pbs.conf file
+    become: yes
+    shell: cp /home/vagrant/pbs-second-ser-conf /etc/pbs.conf
+
+- hosts: pbs-host
+  tasks:
+  - name: start pbs
+    become: yes
+    systemd: 
+             name: pbs
+             state: started
+             enabled: yes
+ 
+- hosts: pbs-mom
+  tasks:
+  - name: install rpm file
+    become: yes
+    yum:
+       name: /home/vagrant/rpmbuild/RPMS/x86_64/pbspro-execution-18.1.4-0.x86_64.rpm
+ 
+  - name: edit host file
+    become: yes
+    shell: chmod 666 /etc/hosts 
+    shell: echo "172.28.128.20 pbshost1 pbshost1" >> /etc/hosts
+    shell: echo "172.28.128.21 pbshost2 pbshost2" >> /etc/hosts
+    shell: echo "172.28.128.22 pbsmom pbsmom" >> /etc/hosts
+ 
+  - name: edit pbs.conf file
+    become: yes
+    shell: cp /home/vagrant/pbs-exe-conf /etc/pbs.conf
+
+  - name: start pbs
+    become: yes
+    systemd: 
+             name: pbs
+             state: started
+             enabled: yes
+ 
+
