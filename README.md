@@ -67,7 +67,6 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치(local repository)
             
             #ansible-playbook nfs_client.yml //mount완료
             nfs-server에서 수행
-            #wget https://github.com/PBSPro/pbspro/releases/download/v18.1.4/pbspro-18.1.4.tar.gz
             #yum install -y gcc make rpm-build libtool hwloc-devel libX11-devel libXt-devel libedit-devel libical-devel ncurses-devel perl postgresql-devel python-devel tcl-devel  tk-devel swig expat-devel openssl-devel libXext libXft wget postgresql-server rpmdevtools
             #rpmdev-setuptree  //vagrant 계정으로 만들것
             #wget https://github.com/PBSPro/pbspro/releases/download/v18.1.4/pbspro-18.1.4.tar.gz
