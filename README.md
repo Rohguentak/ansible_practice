@@ -101,9 +101,8 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치(local repository)
             client에 root로 접속
             ----------------
             
-            #yum install -y nano
             #mv /etc/yum.repos.d/*.repo /tmp/
-            #nano /etc/yum.repos.d/remote.repo   //text editor로 수정해야함
+            #vi /etc/yum.repos.d/remote.repo   //text editor로 수정해야함
             [remote]
 
             name=RHEL Apache
