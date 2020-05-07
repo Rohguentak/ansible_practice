@@ -1,5 +1,5 @@
 # ansible_practice
-vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
+vm으로 cluster 구성 후 ansible로 pbspro 설치(local repository)
 ------------------------------------------------------------------------------------------------------------------------------------
       -os: centos7.7
 
@@ -81,6 +81,43 @@ vm으로 cluster 구성 후 ansible로 pbspro 설치 및 test하기
             #cp pbspro.spec ~/rpmbuild/SPECS
             #cd ~/rpmbuild/SPECS
             #rpmbuild -ba pbspro.spec
+            
+            ---------------------
+            로컬 리포지토리 만들기
+            ---------------------
+            
+            #sudo yum install httpd
+            #sudo systemctl enable httpd
+            #sudo systemctl start httpd //apache server 사용
+            #sudo yum install createrepo yum-utils
+            #sudo mkdir –p /var/www/html/repos/{base,centosplus,extras,updates}
+            #sudo reposync -g -l -d -m --repoid=base --newest-only --download-metadata --download_path=/var/www/html/repos/
+            #sudo reposync -g -l -d -m --repoid=centosplus --newest-only --download-metadata --download_path=/var/www/html/repos/
+            #sudo reposync -g -l -d -m --repoid=extras --newest-only --download-metadata --download_path=/var/www/html/repos/
+            #sudo reposync -g -l -d -m --repoid=updates --newest-only --download-metadata --download_path=/var/www/html/repos/
+            #sudo createrepo /var/www/html
+            
+            ----------------
+            client에 root로 접속
+            ----------------
+            
+            #yum install -y nano
+            #mv /etc/yum.repos.d/*.repo /tmp/
+            #nano /etc/yum.repos.d/remote.repo   //text editor로 수정해야함
+            [remote]
+
+            name=RHEL Apache
+
+            baseurl=http://192.168.1.10
+
+            enabled=1
+
+            gpgcheck=0
+            
+            ----------------
+            nfs_ser에 접속
+            ----------------
+            
             #ansible-playbook pbs-install.yml
 
    
