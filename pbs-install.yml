@@ -34,11 +34,3 @@
     become: yes
     shell: cp /home/vagrant/pbs-exe-conf /etc/pbs.conf
 
-- hosts: all
-  tasks:
-  - name: start pbs
-    become: yes
-    systemd: 
-             name: pbs
-             state: started
-             enabled: yes
